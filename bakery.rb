@@ -1,89 +1,117 @@
-class Bakery
-  attr_accessor :vs5by3, :vs5by5, :mb11by2, :mb11by5, :mb11by8, :cfby3, :cfby5, :cfby9, :vs5, :mb11, :cf, :vs5by1, :mb11by1, :cfby1
+# frozen_string_literal: true
 
-  def initialize(vs5 = 0, mb11 = 0, cf = 0)
+# Bakery class for solving Bakery Coding Challenge
+class Bakery
+  attr_reader :vs5_by_3, :vs5_by_5, :mb11_by_2, :mb11_by_5, :mb11_by_8, :cf_by_3, :cf_by_5, :cf_by_9, :vs5_by_1,
+              :mb11_by_1, :cf_by_1
+  attr_accessor :vs5, :mb11, :cf
+
+  def initialize(vs5 = 0, mb11 = 0, ncf = 0)
     @vs5 = vs5.to_i
-    @vs5by1 = 0
-    @vs5by3 = 0
-    @vs5by5 = 0
+    @vs5_by_1 = @vs5_by_3 = @vs5_by_5 = 0
     @mb11 = mb11.to_i
-    @mb11by1 = 0
-    @mb11by2 = 0
-    @mb11by5 = 0
-    @mb11by8 = 0
-    @cf = cf.to_i
-    @cfby1 = 0
-    @cfby3 = 0
-    @cfby5 = 0
-    @cfby9 = 0
-    self.solve
+    @mb11_by_1 = @mb11_by_2 = @mb11_by_5 = @mb11_by_8 = 0
+    @cf = ncf.to_i
+    @cf_by_1 = @cf_by_3 = @cf_by_5 = @cf_by_9 = 0
+    solve
   end
 
-  def print_soln
-    p "#{@vs5}  VS5  (5/3/1)     = [ #{@vs5by5}, #{@vs5by3}, #{@vs5by1} ] = #{5 * @vs5by5 + 3 * @vs5by3 + @vs5by1}"
-    p "#{@mb11} MB11 (8/5/2/1)   = [ #{@mb11by8}, #{@mb11by5}, #{@mb11by2}, #{@mb11by1} ] = #{8 * @mb11by8 + 5 * @mb11by5 + 2 * @mb11by2 + @mb11by1}"
-    p "#{@cf}   CF   (9/5/3/1)   = [ #{@cfby9}, #{@cfby5}, #{@cfby3}, #{@cfby1} ] = #{9 * @cfby9 + 5 * @cfby5 + 3 * @cfby3 + @cfby1}"
+  # Setter methods will call each solvers
+  def vs5=(vs5)
+    @vs5 = vs5
+    solve_vs5
+  end
+
+  def mb11=(mb11)
+    @mb11 = mb11
+    solve_mb11
+  end
+
+  def cf=(ncf)
+    @cf = ncf
+    solve_cf
+  end
+
+  def vs5_by_pack
+    [@vs5_by_5, @vs5_by_3, @vs5_by_1]
+  end
+
+  def mb11_by_pack
+    [@mb11_by_8, @mb11_by_5, @mb11_by_2, @mb11_by_1]
+  end
+
+  def cf_by_pack
+    [@cf_by_9, @cf_by_5, @cf_by_3, @cf_by_1]
   end
 
   private
-  
+
   def solve
-    if @vs5 > 7 || @vs5 == 5
-        self.solve_VS5
+    if @vs5 >= 5
+      solve_vs5
     else
-        @vs5by3 = @vs5 / 3
-        @vs5by1 = @vs5 % 3
+      @vs5_by_3 = @vs5 / 3
+      @vs5_by_1 = @vs5 % 3
     end
 
     if @mb11 > 4
-        self.solve_MB11 
+      solve_mb11
     else
-        @mb11by2 = @mb11 / 2
-        @mb11by1 = @mb11 % 2
+      @mb11_by_2 = @mb11 / 2
+      @mb11_by_1 = @mb11 % 2
     end
 
-    if @cf > 7 || @cf == 5
-        self.solve_CF 
+    if @cf >= 5
+      solve_cf
     else
-        @cfby3 = @cf / 3
-        @cfby1 = @cf % 3
-    end
-  end
-
-  def solve_VS5
-    # Minimize @vs5by3 + @vs5by5
-    # Given 3 * @vs5by3 + 5* @vs5by5 = @vs5
-    if (((@vs5 - @vs5by3 * 3) / 5.0) % 1 == 0)
-      @vs5by5 = (@vs5 - @vs5by3 * 3) / 5
-    else
-      @vs5by3 = @vs5by3 + 1
-      self.solve_VS5
+      @cf_by_3 = @cf / 3
+      @cf_by_1 = @cf % 3
     end
   end
 
-  def solve_MB11
-    # Minimize @mb11by2 + @mb11by5 + @mb11by8
-    # Given 2 * @mb11by2 + 5 * @mb11by5 + 8 * @mb11by8 = @mb11
-    if (((@mb11 - @mb11by5 * 5) / 2.0) % 1 == 0)
-      @mb11by8 = (@mb11 - @mb11by5 * 5) / 8
-      @mb11by2 = ((@mb11 - @mb11by5 * 5) % 8) / 2
+  # solve_vs5 will check first if @vs5 is divisible by 5
+  # IF yes, that means @vs5 / 5  is the most optimal number of packaging
+  # in the form of pure pack of 5s
+  # ELSE, add a pack of 3 and then check if that makes it divisible by 5 (repeat until divisible by 5)
+
+  def solve_vs5
+    if (((@vs5 - @vs5_by_3 * 3) / 5.0) % 1).zero?
+      @vs5_by_5 = (@vs5 - @vs5_by_3 * 3) / 5
     else
-      @mb11by5 = @mb11by5 + 1
-      self.solve_MB11
+      @vs5_by_3 += 1
+      solve_vs5
     end
   end
 
-  def solve_CF
-    # Minimize @cfby3 + @cfby5 + @cfby9
-    # Given 3 * @cfby3 + 5 * @cfby5 + 9 * @cfby9 = @cf
-    if (((@cf - @cfby5 * 5) / 3.0) % 1 == 0)
-      @cfby9 = (@cf - @cfby5 * 5) / 9
-      @cfby3 = ((@cf - @cfby5 * 5) % 9) / 3
+  # solve_mb11 will check first if @mb11 is divisible by 2
+  # IF yes, that means (@mb11 / 8) + (@mb11 % 8) / 2  is the most optimal number of packaging
+  # in the form of combination of pack of 8s and 2s
+  # Note: @mb11_by_2's max amount is 3, cause otherwise it'll turn into 1 pack of 8 instead
+  # ELSE, add a pack of 5 and then check if that makes it divisible by 2 (repeat until divisible by 2)
+
+  def solve_mb11
+    if (((@mb11 - @mb11_by_5 * 5) / 2.0) % 1).zero?
+      @mb11_by_8 = (@mb11 - @mb11_by_5 * 5) / 8
+      @mb11_by_2 = ((@mb11 - @mb11_by_5 * 5) % 8) / 2
     else
-      @cfby5 = @cfby5 + 1
-      self.solve_CF
+      @mb11_by_5 += 1
+      solve_mb11
     end
   end
 
+  # solve_cf will check first if @cf is divisible by 3
+  # IF yes, that means (@cf / 9) + (@cf % 9) / 3  is the most optimal number of packaging
+  # in the form of combination of pack of 9s and 3s
+  # Note: @cf_by_3's max amount is 2, cause otherwise it'll turn into 1 pack of 9 instead
+  # ELSE, add a pack of 5 and then check if that makes it divisible by 3 (repeat until divisible by 3)
+
+  def solve_cf
+    if (((@cf - @cf_by_5 * 5) / 3.0) % 1).zero?
+      @cf_by_9 = (@cf - @cf_by_5 * 5) / 9
+      @cf_by_3 = ((@cf - @cf_by_5 * 5) % 9) / 3
+    else
+      @cf_by_5 += 1
+      solve_cf
+    end
+  end
 end
-
