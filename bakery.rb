@@ -2,16 +2,16 @@ class Bakery
   attr_accessor :vs5by3, :vs5by5, :mb11by2, :mb11by5, :mb11by8, :cfby3, :cfby5, :cfby9, :vs5, :mb11, :cf, :vs5by1, :mb11by1, :cfby1
 
   def initialize(vs5 = 0, mb11 = 0, cf = 0)
-    @vs5 = vs5
+    @vs5 = vs5.to_i
     @vs5by1 = 0
     @vs5by3 = 0
     @vs5by5 = 0
-    @mb11 = mb11
+    @mb11 = mb11.to_i
     @mb11by1 = 0
     @mb11by2 = 0
     @mb11by5 = 0
     @mb11by8 = 0
-    @cf = cf
+    @cf = cf.to_i
     @cfby1 = 0
     @cfby3 = 0
     @cfby5 = 0
@@ -26,7 +26,7 @@ class Bakery
   end
 
   private
-
+  
   def solve
     if @vs5 > 7 || @vs5 == 5
         self.solve_VS5
@@ -87,7 +87,3 @@ class Bakery
 
 end
 
-(1..100).each do |x|
-    a = Bakery.new(x,x,x)
-    a.print_soln
-end
