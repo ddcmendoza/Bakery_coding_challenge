@@ -1,6 +1,7 @@
 # Hi there 👋
 
 ## Instructions
+See [here](./Codingchallenge_.pdf) for the problem statement.
 
 ### Instance Initialization
 Initialize an instance of ``` Bakery ``` class.
