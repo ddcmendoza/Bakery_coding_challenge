@@ -45,10 +45,10 @@ bakery.cf_by_pack # [0, 2, 1, 0] means 0 x 9s, 2 x 5s, 1 x 3s, 0 x 1s
 
 Similarly you can get each of the pack amount individually by
 
-```ruby
-bakery.vs5_by_5 # 2
-bakery.vs5_by_3 # 0
-bakery.vs5_by_1 # 0
+```
+bakery.vs5_by5 # 2
+bakery.vs5_by3 # 0
+bakery.vs5_by1 # 0
 ```
 
 ### Example

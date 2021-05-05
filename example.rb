@@ -11,19 +11,19 @@ p b.cf_by_pack # [0, 2, 1, 0] means 0 x 9s, 2 x 5s, 1 x 3s, 0 x 1s
 
 # Similarly you can access the values by pack size
 
-p b.vs5_by_5 # 2
-p b.vs5_by_3 # 0
-p b.vs5_by_1 # 0
+p b.vs5_by5 # 2
+p b.vs5_by3 # 0
+p b.vs5_by1 # 0
 
-p b.mb11_by_8 # 1
-p b.mb11_by_5 # 0
-p b.mb11_by_2 # 3
-p b.mb11_by_1 # 0
+p b.mb11_by8 # 1
+p b.mb11_by5 # 0
+p b.mb11_by2 # 3
+p b.mb11_by1 # 0
 
-p b.cf_by_9 # 0
-p b.cf_by_5 # 2
-p b.cf_by_3 # 1
-p b.cf_by_1 # 0
+p b.cf_by9 # 0
+p b.cf_by5 # 2
+p b.cf_by3 # 1
+p b.cf_by1 # 0
 
 # Example with no orders
 bakery = Bakery.new
