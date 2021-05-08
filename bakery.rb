@@ -18,16 +18,19 @@ class Bakery
   # Setter methods will call each solvers
   def vs5=(vs5)
     @vs5 = vs5
+    @vs5_by1 = @vs5_by3 = @vs5_by5 = 0
     solve_vs5
   end
 
   def mb11=(mb11)
     @mb11 = mb11
+    @mb11_by1 = @mb11_by2 = @mb11_by5 = @mb11_by8 = 0
     solve_mb11
   end
 
   def cf=(ncf)
     @cf = ncf
+    @cf_by1 = @cf_by3 = @cf_by5 = @cf_by9 = 0
     solve_cf
   end
 
@@ -57,7 +60,7 @@ class Bakery
   # ELSE, add a pack of 3 and then check if that makes it divisible by 5 (repeat until divisible by 5)
 
   def solve_vs5
-    if ((@vs5 - @vs5_by3 * 3) % 5.0).zero?
+    if ((@vs5 - @vs5_by3 * 3) % 5).zero?
       @vs5_by5 = (@vs5 - @vs5_by3 * 3) / 5
     elsif (@vs5 - partial_sum_vs5 - 3) >= 0
       @vs5_by3 += 1
@@ -70,6 +73,7 @@ class Bakery
   def partial_sum_vs5
     5 * @vs5_by5 + 3 * @vs5_by3
   end
+
   # solve_mb11 will check first if @mb11 is divisible by 2
   # IF yes, that means (@mb11 / 8) + (@mb11 % 8) / 2  is the most optimal number of packaging
   # in the form of combination of pack of 8s and 2s
@@ -82,7 +86,7 @@ class Bakery
       @mb11_by1 = @mb11 % 2
       return
     end
-    if ((@mb11 - @mb11_by5 * 5) % 2.0).zero?
+    if ((@mb11 - @mb11_by5 * 5) % 2).zero?
       @mb11_by8 = (@mb11 - @mb11_by5 * 5) / 8
       @mb11_by2 = ((@mb11 - @mb11_by5 * 5) % 8) / 2
     else
@@ -98,10 +102,10 @@ class Bakery
   # ELSE, add a pack of 5 and then check if that makes it divisible by 3 (repeat until divisible by 3)
 
   def solve_cf
-    if ((@cf - @cf_by5 * 5) % 3.0).zero?
+    if ((@cf - @cf_by5 * 5) % 3).zero?
       @cf_by9 = (@cf - @cf_by5 * 5) / 9
       @cf_by3 = ((@cf - @cf_by5 * 5) % 9) / 3
-    elsif (@cf - partial_sum_cf - 5) >= 0
+    elsif (@cf - partial_sum_cf) >= 5
       @cf_by5 += 1
       solve_cf
     else

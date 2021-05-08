@@ -29,8 +29,8 @@ RSpec.describe Bakery do
     (0..100).each do |x|
       t = described_class.new(x, x, x)
 
-      context 'should only output greater than 0' do
-        it { expect((t.vs5_by_pack + t.mb11_by_pack + t.cf_by_pack).all? { |x| x >= 0 }).to be true }
+      context "For #{x} amount should only output greater than 0" do
+        it { expect((t.vs5_by_pack + t.mb11_by_pack + t.cf_by_pack).all? { |amount| amount >= 0 }).to be true }
       end
       context "Total should be equal to #{x}" do
         it { expect(5 * t.vs5_by5.abs + 3 * t.vs5_by3.abs + t.vs5_by1.abs).to equal(x) }
@@ -45,37 +45,43 @@ RSpec.describe Bakery do
         it { expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be < x }
       end
 
-      context "Total number of packs less than or equal to" do
+      context 'Total number of packs less than or equal to' do
         next unless x > 7
-        it "#{x / 3}"  do
-         expect(t.vs5_by5.abs + t.vs5_by3.abs + t.vs5_by1.abs).to be <= x/3 
+
+        it "#{x / 3} for VS5" do
+          expect(t.vs5_by5.abs + t.vs5_by3.abs + t.vs5_by1.abs).to be <= x / 3
         end
 
         next unless x > 4
-        it "#{x / 2}" do
-          expect(t.mb11_by8.abs + t.mb11_by5.abs + t.mb11_by2.abs + t.mb11_by1.abs).to be <= x/2
+
+        it "#{x / 2} for MB11" do
+          expect(t.mb11_by8.abs + t.mb11_by5.abs + t.mb11_by2.abs + t.mb11_by1.abs).to be <= x / 2
         end
 
         next unless x > 7
-        it "#{x / 3}"  do
-          expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be <= x/3
+
+        it "#{x / 3} for CF" do
+          expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be <= x / 3
         end
       end
 
-      context "Total number of packs greater than or equal to" do
+      context 'Total number of packs greater than or equal to' do
         next unless x > 7
-        it "#{x / 5}"  do
-         expect(t.vs5_by5.abs + t.vs5_by3.abs + t.vs5_by1.abs).to be >= x/5 
+
+        it "#{x / 5} for VS5" do
+          expect(t.vs5_by5.abs + t.vs5_by3.abs + t.vs5_by1.abs).to be >= x / 5
         end
 
         next unless x > 4
-        it "#{x / 8}" do
-          expect(t.mb11_by8.abs + t.mb11_by5.abs + t.mb11_by2.abs + t.mb11_by1.abs).to be >= x/8
+
+        it "#{x / 8} for MB11" do
+          expect(t.mb11_by8.abs + t.mb11_by5.abs + t.mb11_by2.abs + t.mb11_by1.abs).to be >= x / 8
         end
-        
+
         next unless x > 7
-        it "#{x / 9}"  do
-          expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be >= x/9
+
+        it "#{x / 9} for CF" do
+          expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be >= x / 9
         end
       end
     end
