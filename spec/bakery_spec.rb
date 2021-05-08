@@ -39,10 +39,44 @@ RSpec.describe Bakery do
       end
       next unless x > 2
 
-      context "Total number of package less than #{x}" do
+      context "Total number of packs less than #{x}" do
         it { expect(t.vs5_by5.abs + t.vs5_by3.abs + t.vs5_by1.abs).to be < x }
         it { expect(t.mb11_by8.abs + t.mb11_by5.abs + t.mb11_by2.abs + t.mb11_by1.abs).to be < x }
         it { expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be < x }
+      end
+
+      context "Total number of packs less than or equal to" do
+        next unless x > 7
+        it "#{x / 3}"  do
+         expect(t.vs5_by5.abs + t.vs5_by3.abs + t.vs5_by1.abs).to be <= x/3 
+        end
+
+        next unless x > 4
+        it "#{x / 2}" do
+          expect(t.mb11_by8.abs + t.mb11_by5.abs + t.mb11_by2.abs + t.mb11_by1.abs).to be <= x/2
+        end
+
+        next unless x > 7
+        it "#{x / 3}"  do
+          expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be <= x/3
+        end
+      end
+
+      context "Total number of packs greater than or equal to" do
+        next unless x > 7
+        it "#{x / 5}"  do
+         expect(t.vs5_by5.abs + t.vs5_by3.abs + t.vs5_by1.abs).to be >= x/5 
+        end
+
+        next unless x > 4
+        it "#{x / 8}" do
+          expect(t.mb11_by8.abs + t.mb11_by5.abs + t.mb11_by2.abs + t.mb11_by1.abs).to be >= x/8
+        end
+        
+        next unless x > 7
+        it "#{x / 9}"  do
+          expect(t.cf_by9.abs + t.cf_by5.abs + t.cf_by3.abs + t.cf_by1.abs).to be >= x/9
+        end
       end
     end
   end
